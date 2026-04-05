@@ -7,25 +7,144 @@
 		<link rel="stylesheet" href="css/variables.css">
 		<link rel="stylesheet" href="css/base.css">
 		<link rel="stylesheet" href="css/layout.css">
-		<link rel="stylesheet" href="css/components.css">
+		<link rel="stylesheet" href="css/main.css">
 	</head>
 
 	<body>
-		<header>
-			<h1>Sky Observation</h1>
+		<header class="header grid">
+            <div class="container flex__row flex__between">
+                <h1 class="">Sky Observation</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav__item active"><a href="index.html">Home</a></li> 
+                        <li class="nav__item"><a href="observation.html">Observations</a></li>
+                        <li class="nav__item nav__item--button"><a class="button-outline" href="login.html">Login</a></li>
+                    </ul>
+                </nav>
+            </div>
 		</header>
 		
-		<nav>
-			<ul>
-				<li><a href="index.html">Home</a></li> 
-				<li><a href="observation.html">Observations</a></li>
-				<li><a href="login.html">Login</a></li>
-			</ul>
-		</nav>
+		
 		
 		<!-- Use the main element to add main content to the webpage -->
-		<main>	
+		<main class="container">
+            <!--==================== BANNER ====================-->
+            <div class="banner__container">
+                <img src="images/banner.jpg" alt="Sky Observation" class="banner__image">
+                <div class="text-overlay flex__col flex__center">
+                    <h2>Sky Observation Platform</h2>
+                    <p>Record and explore astronomical observations from around the world</p>
+                    <a class="button-outline" href="observation.html">Get Started</a>
+                </div>
+            </div>
+            	
+            <!--==================== OBSERVATION LIST ====================-->
 			<div>
+                <h2 class="section__title">5 MOST POPULAR OBSERVATIONS</h2>
+
+                <div class="observation__square__box__list grid grid--3">
+                    <div class="observation__square__box__item observation__item flex__col">
+                        <img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
+                        <div class="observation__item__content flex__col flex__between"> 
+                            <div class="observation__item__body flex__col">
+                                <h3>Observation 1</h3>
+                                <p>Date: 2024-06-01</p>
+                                <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
+                            </div>
+                            
+                            <div class="observation__item__footer flex__row flex__between">
+                                <div class="flex__row">
+                                    <p>00h 42m 44.3s</p>
+                                    <p>/</p>
+                                    <p>+41° 16' 9.5"</p>
+                                </div>
+                                <div>100 views</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="observation__square__box__item observation__item flex__col">
+                        <img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
+                        <div class="observation__item__content flex__col flex__between"> 
+                            <div class="observation__item__body flex__col">
+                                <h3>Observation 1</h3>
+                                <p>Date: 2024-06-01</p>
+                                <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
+                            </div>
+                            
+                            <div class="observation__item__footer flex__row flex__between">
+                                <div class="flex__row">
+                                    <p>00h 42m 44.3s</p>
+                                    <p>/</p>
+                                    <p>+41° 16' 9.5"</p>
+                                </div>
+                                <div>100 views</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="observation__square__box__item observation__item flex__col">
+                        <img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
+                        <div class="observation__item__content flex__col flex__between"> 
+                            <div class="observation__item__body flex__col">
+                                <h3>Observation 1</h3>
+                                <p>Date: 2024-06-01</p>
+                                <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
+                            </div>
+                            
+                            <div class="observation__item__footer flex__row flex__between">
+                                <div class="flex__row">
+                                    <p>00h 42m 44.3s</p>
+                                    <p>/</p>
+                                    <p>+41° 16' 9.5"</p>
+                                </div>
+                                <div>100 views</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="observation__square__box__item observation__item flex__col">
+                        <img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
+                        <div class="observation__item__content flex__col flex__between"> 
+                            <div class="observation__item__body flex__col">
+                                <h3>Observation 1</h3>
+                                <p>Date: 2024-06-01</p>
+                                <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
+                            </div>
+                            
+                            <div class="observation__item__footer flex__row flex__between">
+                                <div class="flex__row">
+                                    <p>00h 42m 44.3s</p>
+                                    <p>/</p>
+                                    <p>+41° 16' 9.5"</p>
+                                </div>
+                                <div>100 views</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="observation__square__box__item observation__item flex__col">
+                        <img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
+                        <div class="observation__item__content flex__col flex__between"> 
+                            <div class="observation__item__body flex__col">
+                                <h3>Observation 1</h3>
+                                <p>Date: 2024-06-01</p>
+                                <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
+                            </div>
+                            
+                            <div class="observation__item__footer flex__row flex__between">
+                                <div class="flex__row">
+                                    <p>00h 42m 44.3s</p>
+                                    <p>/</p>
+                                    <p>+41° 16' 9.5"</p>
+                                </div>
+                                <div>100 views</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Add more observation items as needed -->
+                </div>
 			</div>
 		</main>
 		

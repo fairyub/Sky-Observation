@@ -1,68 +1,51 @@
-/* --- Container --- */
+/*========== Grid ==========*/
 .container {
-  width: min(90%, 1200px);
-  margin: 0 auto;
-  padding: 0 1rem;
+    width: 1200px;
+    max-width: 100%;
+    margin: 0 auto;
 }
 
-.container--narrow { max-width: 768px; }
-.container--wide   { max-width: 1440px; }
-
-
-/* --- Page Construction --- */
-.page-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+.content__container {
+    gap: 2rem;
+    padding: 2rem 0;
 }
 
-header { }
-main   { flex: 1; } /* push the footer to the bottom. */
-footer { }
-
-
-/* --- Section spacing --- */
 .section {
-  padding: 5rem 0;
+    padding: 1.5rem;
 }
 
-.section--sm { padding: 2.5rem 0; }
-.section--lg { padding: 8rem 0; }
+.flex__full-width {
+    width: 100%;
+}
 
+.flex__row {
+    display: flex;
+    flex-wrap: nowrap;
+}
 
-/* --- Grid systems --- */
+.flex__between {
+    justify-content: space-between;
+}
+
+.flex__center {
+    justify-content: center;
+}
+
+.flex__start {
+    justify-content: flex-start;
+}   
+
+.flex__col {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+}
+
 .grid {
   display: grid;
-  gap: 1.5rem;
+  place-items: center;
 }
 
 .grid--2 { grid-template-columns: repeat(2, 1fr); }
 .grid--3 { grid-template-columns: repeat(3, 1fr); }
 .grid--4 { grid-template-columns: repeat(4, 1fr); }
-
-/* automatic responsive design without media queries. */
-.grid--auto {
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-/* --- Flex utilities --- */
-.flex         { display: flex; }
-.flex--center { justify-content: center; align-items: center; }
-.flex--between{ justify-content: space-between; align-items: center; }
-.flex--col    { flex-direction: column; }
-.flex--wrap   { flex-wrap: wrap; }
-
-
-/* --- Responsive --- */
-@media (max-width: 1024px) {
-  .grid--4 { grid-template-columns: repeat(2, 1fr); }
-  .grid--3 { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 768px) {
-  .section { padding: 3rem 0; }
-
-  .grid--2,
-  .grid--3,
-  .grid--4 { grid-template-columns: 1fr; }
-}

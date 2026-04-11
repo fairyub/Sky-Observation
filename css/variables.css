@@ -1,6 +1,8 @@
 :root {
     --header-height: 120px;
     --border-radius: 8px;
+    --full-padding: 1.5rem;
+    --items-gap: 1.5rem;    
 
     /*========== Colors ==========*/
     --header-color: #1E1E1E;

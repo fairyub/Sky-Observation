@@ -8,13 +8,14 @@
 .content__container {
     gap: 2rem;
     padding: 2rem 0;
+    align-items: flex-start;
 }
 
 .section {
-    padding: 1.5rem;
+    padding: var(--full-padding);
 }
 
-.flex__full-width {
+.full-width {
     width: 100%;
 }
 
@@ -35,6 +36,10 @@
     justify-content: flex-start;
 }   
 
+.flex__end {
+    justify-content: flex-end;
+}  
+
 .flex__col {
     display: flex;
     flex-wrap: nowrap;
@@ -49,3 +54,7 @@
 .grid--2 { grid-template-columns: repeat(2, 1fr); }
 .grid--3 { grid-template-columns: repeat(3, 1fr); }
 .grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+.text-center {
+    text-align: center;
+}

@@ -27,24 +27,29 @@
 	
 		<main class="container content__container flex__row flex__between">
 			<!--==================== FILTER ====================-->
-            <div class="section filters flex__col flex__start">
-				<h3>FILTERS</h3>
-				<form action="/action_page.php" class="filters__form flex__col">
-					<label for="name">Search by name</label>
-					<input type="text" id="name" name="name" placeholder="observation name..." class="filters__input">
-					
-					<label for="from-date">Date range</label>
-					<input type="date" id="from-date" name="from-date" placeholder="from..." class="filters__input">
-					<input type="date" id="to-date" name="to-date" placeholder="to..." class="filters__input">
-					
-					<label for="owner">Owner</label>
-					<input type="text" id="owner" name="owner" placeholder="username..." class="filters__input">
-					
-					<div class="flex__row flex__center">
-						<button class="button-outline">Apply</button>
-					</div>
-				</form>
-			</div>
+            <div class="flex__col left__sidebar flex__start">
+                <div class="section style__form flex__col ">
+                    <h3>FILTERS</h3>
+                    <form action="/action_page.php" class="form__gap flex__col">
+                        <label for="name">Search by name</label>
+                        <input type="text" id="name" name="name" placeholder="observation name..." class="form__input">
+                        
+                        <label for="from-date">Date range</label>
+                        <input type="date" id="from-date" name="from-date" placeholder="from..." class="form__input">
+                        <input type="date" id="to-date" name="to-date" placeholder="to..." class="form__input">
+                        
+                        <label for="owner">Owner</label>
+                        <input type="text" id="owner" name="owner" placeholder="username..." class="form__input">
+                        
+                        <div class="flex__row flex__center">
+                            <button class="button-outline">Apply</button>
+                        </div>
+                    </form>
+                </div>
+                <div>
+                    <a class="button-outline full-width" href="observation-create.html">Add Observation</a>
+                </div>
+            </div>
 
 			<!--==================== OBSERVATION LIST ====================-->
 			<div class="observation__rectangle__box__list flex__col">

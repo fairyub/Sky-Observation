@@ -43,14 +43,14 @@
     border: 1px solid var(--white-color);
     background-color: transparent;
     color: inherit;
+    text-align: center;
     border-radius: var(--border-radius);
-    width: fit-content;
     transition: transform 0.3s ease;
 
     &:hover {
         background-color: var(--button-hover-color);
         color: var(--white-color);
-        transform: scale(1.2);
+        transform: scale(1.1);
     }
 }
 
@@ -60,6 +60,25 @@
 
 .buttons__group .button-outline {
     width: 100%;
+}
+
+.button-color {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--white-color);
+    background-color: var(--white-color);
+    color: var(--black-color);
+    text-align: center;
+    border-radius: var(--border-radius);
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.button--fixed-width {
+    width: 120px;
 }
 
 /*=============== BANNER ===============*/
@@ -166,23 +185,31 @@
     padding: 0.5rem;
 }
 
-/*=============== FILTERS ===============*/
-.filters {
-    width: 25%;
+/*=============== FORM ===============*/
+.style__form {
+    width: 100%;
     height: fit-content;
-    position: sticky;
-    top: calc(var(--header-height) + 2rem);
-    gap: 1.5rem;
+    gap: var(--items-gap);
     border: 1px solid var(--gray-color);
     border-radius: var(--border-radius);
 }
 
-.filters__form {
-    gap: 1.5rem;
+.form__gap {
+    gap: var(--items-gap);
 }
 
-.filters__input {
+.form__input {
     padding: 0.5rem;
     border: 1px solid var(--white-color);
     border-radius: var(--border-radius);
+}
+
+/*=============== LEFT SIDEBAR ===============*/
+.left__sidebar {
+    width: 25%;
+    gap: var(--items-gap);
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+    align-self: flex-start;
+    height: fit-content;
 }

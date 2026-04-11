@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Sky Observation</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/variables.css">
+		<link rel="stylesheet" href="css/base.css">
+		<link rel="stylesheet" href="css/layout.css">
+		<link rel="stylesheet" href="css/main.css">
+	</head>
+
+	<body>
+		<header class="header grid">
+            <div class="container flex__row flex__between">
+                <h1 class="">Sky Observation</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav__item active"><a href="index.html">Home</a></li> 
+                        <li class="nav__item"><a href="observation.html">Observations</a></li>
+                        <li class="nav__item nav__item--button"><a class="button-outline" href="login.html">Login</a></li>
+                    </ul>
+                </nav>
+            </div>
+		</header>
+		
+		<main class="container content__container">
+            <div class="section style__form flex__col">
+                <h3 class="section__title">ADD NEW OBSERVATION</h3>
+                <form action="/action_page.php" class="form__gap flex__col">
+                    <label for="name">Observation name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter observation name" class="form__input">
+
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Describe what you observed..." class="form__input"></textarea>
+
+                    <div class="flex__row form__gap">
+                        <div class="flex__col form__gap">
+                            <label for="ra">Right Ascension (RA)</label>
+                            <input type="text" id="ra" name="ra" placeholder="e.g. 00h 42m 44.3s" class="form__input">
+                        </div>
+
+                        <div class="flex__col form__gap">
+                            <label for="dec">Declination (Dec)</label>
+                            <input type="text" id="dec" name="dec" placeholder="e.g. +41° 16' 9.5''" class="form__input">
+                        </div>
+                    </div>
+                    
+                    <label for="location">Location name</label>
+                    <input type="text" id="location" name="location" placeholder="e.g. Oulu, Finland" class="form__input">
+
+                    <div class="flex__row form__gap">
+                        <div class="flex__col form__gap">
+                            <label for="latitude">Latitude</label>
+                            <input type="text" id="latitude" name="latitude" placeholder="e.g. 26.1285" class="form__input">
+                        </div>
+
+                        <div class="flex__col form__gap">
+                            <label for="longitude">Longitude</label>
+                            <input type="text" id="longitude" name="longitude" placeholder="e.g. 123.7890" class="form__input">
+                        </div>
+                    </div>
+
+                    <div class="flex__row flex__end form__gap">
+                        <a class="button-outline button--fixed-width" href="observation.html">Cancel</a>
+                        <button class="button-color button--fixed-width">Save</button>
+                    </div>
+                </form>
+            </div>
+    	</main>
+		
+	</body>
+</html>

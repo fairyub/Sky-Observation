@@ -5,6 +5,12 @@
     margin: 0 auto;
 }
 
+.container--small {
+    width: 600px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
 .content__container {
     gap: 2rem;
     padding: 2rem 0;
@@ -30,6 +36,7 @@
 
 .flex__center {
     justify-content: center;
+    align-items: center;
 }
 
 .flex__start {
@@ -57,4 +64,8 @@
 
 .text-center {
     text-align: center;
+}
+
+.text-underline {
+    text-decoration: underline;
 }

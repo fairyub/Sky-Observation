@@ -21,6 +21,10 @@
     padding: var(--full-padding);
 }
 
+.gap__side {
+    gap: var(--items-gap);
+}
+
 .full-width {
     width: 100%;
 }

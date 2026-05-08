@@ -213,3 +213,23 @@
     align-self: flex-start;
     height: fit-content;
 }
+
+.right-side__detail {
+    flex: 0 0 25%;
+    width: 25%;
+    gap: var(--items-gap);
+    top: calc(var(--header-height) + 2rem);
+    height: fit-content;
+}
+
+.left-side__detail {
+    flex: 1 1 0;
+}
+
+.observation__detail__info {
+    gap: var(--items-gap);
+    border: 1px solid var(--gray-color);
+    border-radius: var(--border-radius);
+    background-color: var(--dark-gray-color);
+    padding: 1rem;
+}

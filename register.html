@@ -1,45 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Sky Observation</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/variables.css">
-		<link rel="stylesheet" href="css/base.css">
-		<link rel="stylesheet" href="css/layout.css">
-		<link rel="stylesheet" href="css/main.css">
-	</head>
+    <head>
+        <title>Sky Observation</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/layout.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
 
-	<body>
-		<header class="header grid">
+    <body>
+        <header class="header grid">
             <div class="container flex__row flex__between">
-                <h1 class="">Sky Observation</h1>
+                <h1>Sky Observation</h1>
             </div>
-		</header>
-		
-		
-		<main class="container--small content__container">
-            <div class="section style__form flex__col ">
-                <h3 class="section__title text-center">Register</h3>
-                <form action="/action_page.php" class="form__gap flex__col">
+        </header>
+
+        <main class="container--small content__container">
+            <section class="section style__form flex__col">
+                <h2 class="section__title text-center">Register</h2>
+                <form id="registerForm" class="form__gap flex__col">
+                    <div id="registerError" class="error-msg" style="display:none"></div>
+
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Choose a username..." class="form__input">
+                    <input type="text" id="username" name="username" placeholder="Choose a username" class="form__input" required>
 
                     <label for="nickname">Nickname</label>
-                    <input type="text" id="nickname" name="nickname" placeholder="Choose a nickname..." class="form__input">
+                    <input type="text" id="nickname" name="nickname" placeholder="Choose a nickname" class="form__input" required>
 
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password..." class="form__input">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" class="form__input" required>
 
-                    <label for="confirm-password">Confirm Password</label>
-                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password..." class="form__input">
-                    
+                    <label for="confirm-password">Confirm password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" class="form__input" required>
+
                     <div class="flex__col flex__center form__gap">
-                        <a class="button-outline" href="index.html">Create Account</a>
+                        <button type="submit" class="button-outline">Create Account</button>
+                        <p>Already have an account? <a class="link text-underline" href="login.html">Login</a></p>
                     </div>
                 </form>
-            </div>
+            </section>
         </main>
+
+        <script src="scripts/db.js"></script>
+        <script src="scripts/auth.js"></script>
+        <script src="scripts/common.js"></script>
+        <script>
+            (async () => {
+                await loadSampleDataIfEmpty();
+                Auth.redirectIfLoggedIn();
+
+                const form = document.getElementById("registerForm");
+                const errBox = document.getElementById("registerError");
+
+                form.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    errBox.style.display = "none";
+                    try {
+                        await Auth.register(
+                            form.username.value,
+                            form.nickname.value,
+                            form.password.value,
+                            form["confirm-password"].value
+                        );
+                        location.replace("index.html");
+                    } catch (err) {
+                        errBox.textContent = err.message;
+                        errBox.style.display = "";
+                    }
+                });
+            })();
+        </script>
     </body>
 </html>
-            

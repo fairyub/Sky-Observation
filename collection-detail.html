@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sky Observation</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/layout.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+
+    <body>
+        <header class="header grid">
+            <div class="container flex__row flex__between">
+                <h1>Sky Observation</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav__item"><a href="index.html">Home</a></li>
+                        <li class="nav__item"><a href="observation.html">Observations</a></li>
+                        <li class="nav__item active"><a href="collection.html">Collections</a></li>
+                        <li class="nav__item"><span id="navNickname"></span></li>
+                        <li class="nav__item nav__item--button">
+                            <button class="button-outline" id="logoutBtn" type="button">Logout</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container content__container">
+            <div id="notFound" class="error-msg" style="display:none">Collection not found.</div>
+
+            <article class="section" id="detailContainer">
+                <div class="flex__row flex__between view-header">
+                    <div class="flex__col collection-info">
+                        <h2 id="viewName"></h2>
+                        <p class="muted" id="viewDesc"></p>
+                        <p class="muted">
+                            <span id="viewCount">0</span> observations · created <span id="viewDate"></span>
+                        </p>
+                    </div>
+                    <div class="flex__row no-print view-actions">
+                        <button class="button-outline" type="button" id="printBtn">Print as PDF</button>
+                        <button class="button-outline button-danger" id="deleteCollectionBtn" type="button">
+                            Delete this collection
+                        </button>
+                    </div>
+                </div>
+
+                <!-- OBSERVATIONS LIST -->
+                <div id="collectionItems" class="observation__rectangle__box__list flex__col"></div>
+                <p id="emptyCollection" class="muted" style="display:none">
+                    This collection is empty. Open an observation and use "Add to collection" to add it here.
+                </p>
+
+            </article>
+        </main>
+
+        <!-- Observation item template -->
+        <template id="collectionItemTemplate">
+            <article class="section observation__rectangle__box__item observation__item flex__row">
+                <img src="media/images/banner.jpg" class="observation__item__image">
+                <div class="observation__item__content flex__col flex__between">
+                    <div class="observation__item__body flex__col">
+                        <h3 class="ci-name"></h3>
+                        <p class="ci-desc"></p>
+                        <div class="flex__row observation__item--location">
+                            <div class="observation__item--location--detail flex__row">
+                                <span>RA</span> <span class="ci-ra"></span>
+                            </div>
+                            <div class="observation__item--location--detail flex__row">
+                                <span>Dec</span> <span class="ci-dec"></span>
+                            </div>
+                            <div class="observation__item--location--detail flex__row ci-loc"></div>
+                        </div>
+                    </div>
+                    <div class="observation__item__footer flex__row flex__between">
+                        <span>by @<span class="ci-owner"></span></span>
+                        <span class="ci-date"></span>
+                    </div>
+                </div>
+                <div class="no-print flex__col buttons__group">
+                    <a class="button-outline ci-view" href="#">View</a>
+                    <button class="button-outline button-danger ci-remove" type="button">Remove</button>
+                </div>
+            </article>
+        </template>
+
+        <footer class="no-print">
+            <p>&copy; 2026 Sky Observation</p>
+        </footer>
+
+        <script src="scripts/db.js"></script>
+        <script src="scripts/auth.js"></script>
+        <script src="scripts/common.js"></script>
+        <script src="scripts/collection-detail.js"></script>
+        <script>
+            (async () => {
+                await loadSampleDataIfEmpty();
+                if (!Auth.requireLogin()) return;
+                setupHeaderForCurrentUser();
+                await loadCollectionDetail();
+            })();
+        </script>
+    </body>
+</html>

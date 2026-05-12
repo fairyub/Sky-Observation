@@ -1,57 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Sky Observation</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/variables.css">
-		<link rel="stylesheet" href="css/base.css">
-		<link rel="stylesheet" href="css/layout.css">
-		<link rel="stylesheet" href="css/main.css">
-	</head>
+    <head>
+        <title>Sky Observation</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/layout.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
 
-	<body>
-		<header class="header grid">
+    <body>
+        <header class="header grid">
             <div class="container flex__row flex__between">
-                <h1 class="">Sky Observation</h1>
+                <h1>Sky Observation</h1>
                 <nav>
                     <ul class="nav">
-                        <li class="nav__item"><a href="index.html">Home</a></li> 
+                        <li class="nav__item"><a href="index.html">Home</a></li>
                         <li class="nav__item active"><a href="observation.html">Observations</a></li>
-                        <li class="nav__item nav__item--button"><a class="button-outline" href="login.html">Login</a></li>
+                        <li class="nav__item"><a href="collection.html">Collections</a></li>
+                        <li class="nav__item"><span id="navNickname"></span></li>
+                        <li class="nav__item nav__item--button">
+                            <button class="button-outline" id="logoutBtn" type="button">Logout</button>
+                        </li>
                     </ul>
                 </nav>
             </div>
-		</header>
+        </header>
 
-    <main class="container content__container">
-        <div class="section flex__row gap__side">
-            <div class="flex__col left-side__detail">
-                <h3 class="section__title">Orion Nebula — M42</h3>
-                <div>
-                    by <span class="author">@stargazer_99</span>
-                    · <time datetime="2024-06-15">2024-06-15</time>
-                    modified <time datetime="2025-03-12">2025-03-12</time>
-                </div>
-                <br/>
-                <div class="banner__container">
-                    <img src="images/banner.jpg" alt="Sky Observation" class="banner__image">
-                </div>
+        <main class="container content__container">
+            <div id="notFound" class="error-msg" style="display:none">Observation not found.</div>
+
+            <div id="detailContainer" class="section flex__row gap__side">
+                <!-- LEFT SIDE -->
+                <section class="flex__col left-side__detail">
+                    <div class="flex__col container__detail">
+                        <h2>
+                            <span id="obsName"></span>
+                            <span id="obsEdited" class="edited-tag" style="display:none">edited</span>
+                        </h2>
+                        <div>
+                            by <span class="comment-author" id="obsOwner"></span>
+                            · <time id="obsDate"></time>
+                            <span id="obsEditedInfo" class="muted" style="display:none"></span>
+                        </div>
+                        <p id="obsDesc" style="margin-top:1rem"></p>
+
+                        <div id="ownerActions" class="flex__row" style="gap:1rem; margin-top:1rem; display:none">
+                            <a class="button-outline" id="editLink" href="#">Edit</a>
+                            <button class="button-outline button-danger" id="deleteBtn" type="button">Delete</button>
+                        </div>
+
+                        <div class="banner__container">
+                            <img src="media/images/banner.jpg" alt="Sky Observation" class="banner__image">
+                        </div>
+                    </div>
+
+                    <!-- RATING -->
+                    <div class="flex__col container__detail">
+                        <h3>Rating</h3>
+                        <p class="rating-line" id="ratingSummary">No ratings yet.</p>
+                        <form id="ratingForm" class="form__gap">
+                            <div class="star-rating">
+                                <input type="radio" name="rating" id="star5" value="5">
+                                <label for="star5">★</label>
+                                <input type="radio" name="rating" id="star4" value="4">
+                                <label for="star4">★</label>
+                                <input type="radio" name="rating" id="star3" value="3">
+                                <label for="star3">★</label>
+                                <input type="radio" name="rating" id="star2" value="2">
+                                <label for="star2">★</label>
+                                <input type="radio" name="rating" id="star1" value="1">
+                                <label for="star1">★</label>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- COMMENTS -->
+                    <div class="container__comment flex__col">
+                        <h3>Comments</h3>
+                        <div id="commentsList"></div>
+                        <p id="noComments" class="muted" style="display:none">No comments yet.</p>
+
+                        <form id="commentForm" class="box__comment flex__col">
+                            <textarea name="text" class="input__comment" rows="3" placeholder="Write a comment..." required></textarea>
+                            <button type="submit" class="button-outline">Post Comment</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- RIGHT SIDE -->
+                <aside class="flex__col right-side__detail">
+                    <div class="observation__detail__info flex__col">
+                        <h3>Coordinates</h3>
+                        <p>Right Ascension: <span id="obsRA"></span></p>
+                        <p>Declination: <span id="obsDec"></span></p>
+                        <h3 style="margin-top:1rem">Location</h3>
+                        <p id="obsLocName"></p>
+                        <p>Lat: <span id="obsLat"></span></p>
+                        <p>Lng: <span id="obsLng"></span></p>
+                        <p class="muted" style="margin-top:1rem"><span id="obsViews">0</span> views</p>
+                    </div>
+
+                    <!-- ADD TO COLLECTION -->
+                    <div class="observation__detail__info flex__col" style="gap:1rem">
+                        <label for="collectionSelect">Add to collection</label>
+                        <select id="collectionSelect" class="form__input">
+                            <option value="">- select -</option>
+                        </select>
+                        <button class="button-outline full-width" id="addToColBtn" type="button">Add</button>
+                        <a class="button-outline full-width" href="collection.html">Manage collections</a>
+                        <p id="colMsg" class="muted" style="display:none"></p>
+                    </div>
+                </aside>
             </div>
-            <div class="flex__col right-side__detail ">
-                <div class="flex__col observation__detail__info">
-                    <h4>COORDINATES</h4>
-                    <p>Right Ascension: 05h 35m 17.3s</p>
-                    <p>Declination: -05° 23' 28"</p>
-                    <br/>
-                    <h4>LOCATION</h4>
-                    <p>Mauna Kea Observatory, Hawaii</p>
-                    <p>Latitude: 19.8207° N</p>
-                    <p>Longitude: 155.4681° W</p>
+        </main>
+
+        <!-- Comment template -->
+        <template id="commentTemplate">
+            <article class="card__comment">
+                <div class="flex__row flex__between" style="margin-bottom:0.4rem">
+                    <strong class="comment-author cm-author"></strong>
+                    <span class="comment-date cm-date"></span>
                 </div>
-                <a class="button-outline full-width" href="collection.html">Add to Collection</a>
-            </div>
-        </div>
-    </main>
-  </body>
+                <p class="cm-text"></p>
+            </article>
+        </template>
+
+        <footer>
+            <p>&copy; 2026 Sky Observation</p>
+        </footer>
+
+        <script src="scripts/db.js"></script>
+        <script src="scripts/auth.js"></script>
+        <script src="scripts/common.js"></script>
+        <script src="scripts/observation-detail.js"></script>
+        <script>
+            (async () => {
+                await loadSampleDataIfEmpty();
+                if (!Auth.requireLogin()) return;
+                setupHeaderForCurrentUser();
+                await loadDetail();
+            })();
+        </script>
+    </body>
 </html>

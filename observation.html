@@ -1,432 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Sky Observation</title>
-		<meta charset="utf-8">
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/variables.css">
-		<link rel="stylesheet" href="css/base.css">
-		<link rel="stylesheet" href="css/layout.css">
-		<link rel="stylesheet" href="css/main.css">
-	</head>
+    <head>
+        <title>Sky Observation</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/layout.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
 
-	<body>
-		<header class="header grid">
+    <body>
+        <header class="header grid">
             <div class="container flex__row flex__between">
-                <h1 class="">Sky Observation</h1>
+                <h1>Sky Observation</h1>
                 <nav>
                     <ul class="nav">
-                        <li class="nav__item"><a href="index.html">Home</a></li> 
+                        <li class="nav__item"><a href="index.html">Home</a></li>
                         <li class="nav__item active"><a href="observation.html">Observations</a></li>
-                        <li class="nav__item nav__item--button"><a class="button-outline" href="login.html">Login</a></li>
+                        <li class="nav__item"><a href="collection.html">Collections</a></li>
+                        <li class="nav__item"><span id="navNickname"></span></li>
+                        <li class="nav__item nav__item--button">
+                            <button class="button-outline" id="logoutBtn" type="button">Logout</button>
+                        </li>
                     </ul>
                 </nav>
             </div>
-		</header>
-		
-	
-		<main class="container content__container flex__row flex__between">
-			<!--==================== FILTER ====================-->
-            <div class="flex__col left__sidebar flex__start">
-                <div class="section style__form flex__col ">
-                    <h3>FILTERS</h3>
-                    <form action="/action_page.php" class="form__gap flex__col">
-                        <label for="name">Search by name</label>
-                        <input type="text" id="name" name="name" placeholder="observation name..." class="form__input">
-                        
+        </header>
+
+        <main class="container content__container flex__row flex__between">
+            <!-- FILTER -->
+            <aside class="flex__col left__sidebar flex__start">
+                <div class="section style__form flex__col">
+                    <h3>Filters</h3>
+                    <form id="filterForm" class="form__gap flex__col">
+                        <label for="name">Search by name or ID</label>
+                        <input type="text" id="name" name="name" placeholder="observation name or ID..." class="form__input">
+
                         <label for="from-date">Date range</label>
-                        <input type="date" id="from-date" name="from-date" placeholder="from..." class="form__input">
-                        <input type="date" id="to-date" name="to-date" placeholder="to..." class="form__input">
-                        
-                        <label for="owner">Owner</label>
-                        <input type="text" id="owner" name="owner" placeholder="username..." class="form__input">
-                        
-                        <div class="flex__row flex__center">
-                            <button class="button-outline">Apply</button>
+                        <input type="date" id="from-date" name="from-date" class="form__input">
+                        <input type="date" id="to-date" name="to-date" class="form__input">
+
+                        <label for="owner">Owner nickname</label>
+                        <input type="text" id="owner" name="owner" placeholder="nickname..." class="form__input">
+
+                        <div class="flex__row flex__center" style="gap:1rem">
+                            <button type="submit" class="button-color">Apply</button>
+                            <button type="button" id="clearFilters" class="button-outline">Clear</button>
                         </div>
                     </form>
                 </div>
-                <div>
-                    <a class="button-outline full-width" href="observation-create.html">Add Observation</a>
-                </div>
-            </div>
+                <a class="button-outline full-width" href="observation-create.html">Add Observation</a>
+            </aside>
 
-			<!--==================== OBSERVATION LIST ====================-->
-			<div class="observation__rectangle__box__list flex__col">
-                <a href="observation-detail.html">
-                    <div class="section observation__rectangle__box__item observation__item flex__row">
-                        <img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-                        <div class="observation__item__content flex__col flex__between"> 
-                            <div class="observation__item__body flex__col">
-                                <h3>Observation 1</h3>
-                                <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                                <div class="flex__row observation__item--location">
-                                    <div class="observation__item--location--detail flex__row">
-                                        <p>RA </p>
-                                        <p>05h 30m</p>
-                                    </div>
-                                    <div class="observation__item--location--detail flex__row">
-                                        <p>Dec </p>
-                                        <p>+22° 00'</p>
-                                    </div>
-                                    <div class="observation__item--location--detail flex__row">
-                                        Oulu
-                                    </div>
+            <!-- LIST -->
+            <section class="flex__col right-side__content">
+                <div id="observationList" class="observation__rectangle__box__list flex__col"></div>
+                <p id="emptyMessage" class="muted" style="display:none">No observations match these filters.</p>
+            </section>
+        </main>
+
+        <!-- Observation row template -->
+        <template id="observationRowTemplate">
+            <article class="section observation__rectangle__box__item observation__item">
+                <a class="observation__card__link row-link" href="#" style="display:flex; gap:1rem;">
+                    <img src="media/images/banner.jpg" class="observation__item__image">
+                    <div class="observation__item__content flex__col flex__between">
+                        <div class="observation__item__body flex__col">
+                            <h3>
+                                <span class="row-name"></span>
+                                <span class="edited-tag row-edited" style="display:none">edited</span>
+                            </h3>
+                            <p class="row-desc"></p>
+                            <div class="flex__row observation__item--location">
+                                <div class="observation__item--location--detail flex__row">
+                                    <span>RA</span> <span class="row-ra"></span>
                                 </div>
-                            </div>
-                            
-                            <div class="observation__item__footer flex__row flex__between">
-                                <div class="flex__row">
-                                        <p>by @user1</p>
-                                        <p> · </p>
-                                        <p>2025-03-10</p>
+                                <div class="observation__item--location--detail flex__row">
+                                    <span>Dec</span> <span class="row-dec"></span>
                                 </div>
-                                <div>100 views</div>
+                                <div class="observation__item--location--detail flex__row row-loc"></div>
                             </div>
                         </div>
-                        <div class="flex__col buttons__group">
-                            <button class="button-outline">View</button>
-                            <button class="button-outline">Edit</button>
-                            <button class="button-outline">Delete</button>
+                        <div class="observation__item__footer flex__row flex__between">
+                            <div class="flex__row" style="gap:0.4rem">
+                                <span>by @<span class="row-owner"></span></span>
+                                <span>·</span>
+                                <span class="row-date"></span>
+                            </div>
+                            <span class="muted"><span class="row-views">0</span> views</span>
                         </div>
                     </div>
                 </a>
+            </article>
+        </template>
 
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
+        <footer>
+            <p>&copy; 2026 Sky Observation</p>
+        </footer>
 
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-
-                <div class="section observation__rectangle__box__item observation__item flex__row">
-					<img src="images/banner.jpg" alt="Sky Observation" class="observation__item__image">
-					<div class="observation__item__content flex__col flex__between"> 
-                        <div class="observation__item__body flex__col">
-                            <h3>Observation 1</h3>
-                            <p>Description: Stunning views of the Andromeda Galaxy and various nebulae.</p>
-                            <div class="flex__row observation__item--location">
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>RA </p>
-                                    <p>05h 30m</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    <p>Dec </p>
-                                    <p>+22° 00'</p>
-                                </div>
-                                <div class="observation__item--location--detail flex__row">
-                                    Oulu
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="observation__item__footer flex__row flex__between">
-                            <div class="flex__row">
-                                    <p>by @user1</p>
-                                    <p> · </p>
-                                    <p>2025-03-10</p>
-                            </div>
-                            <div>100 views</div>
-                        </div>
-					</div>
-					<div class="flex__col buttons__group">
-						<button class="button-outline">View</button>
-						<button class="button-outline">Edit</button>
-						<button class="button-outline">Delete</button>
-					</div>
-				</div>
-			</div>
-
-		</main>
-		
-	</body>
+        <script src="scripts/db.js"></script>
+        <script src="scripts/auth.js"></script>
+        <script src="scripts/common.js"></script>
+        <script src="scripts/observation.js"></script>
+        <script>
+            (async () => {
+                await loadSampleDataIfEmpty();
+                if (!Auth.requireLogin()) return;
+                setupHeaderForCurrentUser();
+                await loadObservations();
+            })();
+        </script>
+    </body>
 </html>

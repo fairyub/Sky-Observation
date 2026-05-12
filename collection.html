@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sky Observation</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/layout.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+
+    <body>
+        <header class="header grid">
+            <div class="container flex__row flex__between">
+                <h1>Sky Observation</h1>
+                <nav>
+                    <ul class="nav">
+                        <li class="nav__item"><a href="index.html">Home</a></li>
+                        <li class="nav__item"><a href="observation.html">Observations</a></li>
+                        <li class="nav__item active"><a href="collection.html">Collections</a></li>
+                        <li class="nav__item"><span id="navNickname"></span></li>
+                        <li class="nav__item nav__item--button">
+                            <button class="button-outline" id="logoutBtn" type="button">Logout</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container content__container flex__row flex__between">
+            <!-- LEFT SIDE -->
+            <aside class="no-print left__sidebar">
+                <div class="section style__form flex__col">
+                    <h3>Create a new collection</h3>
+                    <form id="createCollectionForm" class="form__gap flex__col">
+                        <label for="name">Collection name</label>
+                        <input type="text" id="name" name="name" placeholder="e.g. Messier marathon" class="form__input" required>
+
+                        <label for="description">Description (optional)</label>
+                        <textarea id="description" name="description" rows="5" class="form__input" placeholder="Notes..."></textarea>
+
+                        <div class="flex__row flex__center form__gap">
+                            <button type="submit" class="button-color button--fixed-width">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+
+            <!-- RIGHT SIDE -->
+            <div class="flex__col right-side__content">
+                <section>
+                    <h2 class="section__title">My collections</h2>
+                    <div id="collectionsGrid" class="collections-grid"></div>
+                    <p id="noCollections" class="muted" style="display:none">
+                        You don't have any collections yet. Create one on the left.
+                    </p>
+                </section>
+            </div>
+        </main>
+
+        <!-- Collection card template -->
+        <template id="collectionCardTemplate">
+            <a class="col-link" href="#">
+                <article class="flex__col collection-card">
+                    <h3 class="col-name"></h3>
+                    <p class="col-desc" style="display:none"></p>
+                    <p class="muted col-count"></p>
+                </article>
+            </a>
+        </template>
+
+        <footer>
+            <p>&copy; 2026 Sky Observation</p>
+        </footer>
+
+        <script src="scripts/db.js"></script>
+        <script src="scripts/auth.js"></script>
+        <script src="scripts/common.js"></script>
+        <script src="scripts/collection.js"></script>
+        <script>
+            (async () => {
+                await loadSampleDataIfEmpty();
+                if (!Auth.requireLogin()) return;
+                setupHeaderForCurrentUser();
+                await loadCollectionsPage();
+            })();
+        </script>
+    </body>
+</html>
